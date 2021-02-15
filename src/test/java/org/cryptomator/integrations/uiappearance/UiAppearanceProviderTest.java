@@ -39,7 +39,7 @@ public class UiAppearanceProviderTest {
 	}
 
 
-	@Test //doesn't work propably yet.
+	@Test
 	@DisplayName("WinUiAppearanceProvider can be loaded")
 	public void testLoadWinUiAppearanceProvider() {
 		var loadedProviders = ServiceLoader.load(UiAppearanceProvider.class);

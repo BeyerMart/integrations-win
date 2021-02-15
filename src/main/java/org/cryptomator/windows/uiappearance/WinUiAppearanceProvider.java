@@ -36,7 +36,7 @@ public class WinUiAppearanceProvider implements UiAppearanceProvider, WinAppeara
 		}	}
 
 	@Override
-	public synchronized void addListener(UiAppearanceListener listener) throws UiAppearanceException {
+	public synchronized void addListener(UiAppearanceListener listener) {
 		var wasEmpty = registeredListeners.isEmpty();
 		registeredListeners.add(listener);
 		if (wasEmpty) {

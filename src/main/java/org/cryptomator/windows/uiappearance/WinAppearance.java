@@ -29,19 +29,14 @@ class WinAppearance {
 		}
 	}
 
-	void startObserving(WinAppearanceListener listener) throws UiAppearanceException {
-		if (Native.INSTANCE.prepareObserving(listener) != 0){
-			throw new UiAppearanceException("failed to prepeare Observer"); //TODO act on return message and write proper Exception
-		};
-		observerThread = new Thread(Native.INSTANCE::observe, "AppearanceObserver");
+	void startObserving(WinAppearanceListener listener) {
+		Runnable prepAndObserve = () -> Native.INSTANCE.observe(listener);
+		observerThread = new Thread(prepAndObserve,  "AppearanceObserver");
 		observerThread.setDaemon(true);
-		//observerThread.start(); //terminates, but no Java Call. Message Box ("theme Changed") appears only with a message Box in stopObserveing
-		observerThread.run(); //calls java Method, but stopObserving does not terminate the programm
+		observerThread.start();
 	}
 
 	void stopObserving() {
-		//observerThread.stop(); //is deprecated, unsafe and should not be used. (I don't think it would work)
-		System.out.println("stopping");
 		Native.INSTANCE.stopObserving();
 	}
 
@@ -70,7 +65,7 @@ class WinAppearance {
 		public native int prepareObserving(WinAppearanceListener listener);
 
 		// will block, to be called in a new thread
-		public native void observe();
+		public native int observe(WinAppearanceListener listener);
 
 		public native void stopObserving();
 	}
